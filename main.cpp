@@ -3,9 +3,13 @@
 
 using namespace std;
 
+string command;
+
 int main() {
-    // Now only Hello, World! sorry.
-    cout << "Hello, World!"; 
+    while (true) {
+        cin >> command;
+        
+    }
 
     return 0; 
 }

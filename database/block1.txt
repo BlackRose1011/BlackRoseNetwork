@@ -1,0 +1,49 @@
+BLOCK NUMBER 1
+
+Version: 1.01
+Previous block hash: 
+Timestamp: 
+Difficulty target: 
+Nonce (Proof of work): 
+
+Transactions:
+1 {
+    From: A
+    To: B
+    Sum: 0.034 BRC
+    Time: 00:14 13 June 2024
+    Hash: ...
+}
+
+2 {
+    From: F
+    To: T
+    Sum: 0.072 BRC
+    Time: 00:14 13 June 2024
+    Hash: ...
+}
+
+3 {
+    From: V
+    To: J
+    Sum: 0.134 BRC
+    Time: 00:15 13 June 2024
+    Hash: ...
+}
+
+4 {
+    From: M
+    To: B
+    Sum: 0.048 BRC
+    Time: 00:18 13 June 2024
+    Hash: ...
+}
+
+5 {
+    From: K
+    To: M
+    Sum: 2.023 BRC
+    Time: 00.25 13 June 2024
+    Hash: ...
+}
+...
