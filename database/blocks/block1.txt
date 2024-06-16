@@ -3,10 +3,12 @@ BLOCK NUMBER 1
 Version: 1.01
 Previous block hash: 
 Timestamp: 
+Merkle Root: 
 Difficulty target: 
 Nonce (Proof of work): 
 
 Transactions:
+
 1 {
     From: A
     To: B
