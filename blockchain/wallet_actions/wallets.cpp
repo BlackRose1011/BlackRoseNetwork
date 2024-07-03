@@ -62,3 +62,28 @@ void new_wallet_func(int wallet_number) {
     cout << "# Private key: " << MAGENTA << private_key << RESET << endl;
     cout << "# Balance: " << MAGENTA << balance << RESET << endl;
 }
+
+void check_wallet_info_func() {
+    string filename;
+    int wallet_number;
+
+    cout << BLUE << "\nWrite an wallet number: " << YELLOW;
+    cin >> wallet_number;
+    filename = "database/wallets/wallet_" + to_string(wallet_number) + ".md";
+
+    ifstream fin;
+    fin.open(filename);
+
+    if (!fin.is_open()) {
+        cout << RED << "Error: " << RESET << "file cannot be opened.\n" << RED << 
+        "Reason: " << RESET << "no such file exists.\n";
+    }
+    else {
+        char ch;
+        cout << endl;
+        while (fin.get(ch)) {
+            cout << MAGENTA << ch;
+        }
+    }
+    fin.close();
+}
