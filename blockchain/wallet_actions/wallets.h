@@ -1,3 +1,5 @@
+// JUST INDENTIFY FUNCTIONS THAT WE CREATED IN transactions.cpp
+
 #ifndef WALLETS_H
 #define WALLETS_H
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-string block_version = "1.02";
+string block_version = "1.00 (aplha version)";
 
 string merkleroot, timestamp, difficulty, nonce, transactions, transaction_limit,
 previous_hash, block_header, block_hash;
@@ -34,5 +34,7 @@ int main() {
                 " Timestamp: " + timestamp +
                 " Difficulty: " + difficulty +
                 " Nonce: " + nonce;
+
+        block_number++;
     }
 }
