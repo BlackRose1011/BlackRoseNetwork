@@ -13,12 +13,9 @@ int from, to;
 string check;
 int sum;
 
-#define RESET   "\033[0m"
-#define RED     "\033[31m"   
-#define GREEN   "\033[32m"     
-#define YELLOW  "\033[33m"  
-#define BLUE    "\033[34m"     
-#define MAGENTA "\033[35m"
+#define RESET       "\033[0m"
+#define CYAN        "\033[36m"     
+#define RED         "\033[31m" 
 
 // FUNCTION TO REWRITE THE LINE IN FILE
 void rewrite_line(const string& filename, int target_line, const string& new_content) {
@@ -60,17 +57,18 @@ void rewrite_line(const string& filename, int target_line, const string& new_con
 
 // FUNCTION TO SEND CRYPTO FROM ONE TO ANOTHER WALLET
 void send_crypto_func() {
-    cout << BLUE << "Write wallet number from what you want to send:\n" << YELLOW;
+    cout << "\nWrite wallet number from what you want to send:\n>> ";
     cin >> from; 
 
-    cout << BLUE << "Write what wallet will recieve:\n" << YELLOW;
+    cout << "Write what wallet will recieve:\n>> ";
     cin >> to;
 
-    cout << BLUE << "How much you would like to send?\n" << YELLOW;
+    cout << "How much you would like to send?\n>> ";
     cin >> sum;
 
-    cout << BLUE  << "\nFrom: " << RED << from << BLUE << "\nTo: " << RED 
-    << to << BLUE << "\nSum: " << RED << sum << RED << "\n\nAre you sure that all the entered information is correct? (YES / NO)" << GREEN <<endl;
+    cout << "\n\nAre you sure that all the entered information is correct? (YES / NO)\n"
+    << CYAN << "\nFrom: " << RESET << from << CYAN << "\nTo: " << RESET 
+    << to << CYAN << "\nSum: " << RESET << sum << "\n\n>> ";
     cin >> check;
     cout << "\n";
 
@@ -79,6 +77,10 @@ void send_crypto_func() {
         // PATH TO FILE
         string filename_from = "database/wallets/wallet_" + to_string(from) + ".md";
         ifstream fin_from(filename_from); // OPEN FILE
+
+        string filename_to = "database/wallets/wallet_" + to_string(to) + ".md";
+        ifstream fin_to(filename_to); 
+
         int digits_1 = 0; 
         int digits_2 = 0;
 
@@ -105,12 +107,8 @@ void send_crypto_func() {
             fin_from.close(); // CLOSE FILE AFTER READING
         } 
         else {
-            cout << RED << "Error " << BLUE << ": Unable to open file!" << endl;
+            cout << RED << "Error " << RESET << ": Unable to open file!" << endl;
         }
-        
-        // DOWN THERE IS ALL THE SAME, WE JUST READING THE LINE WITH BALANCE FROM SECOND FILE
-        string filename_to = "database/wallets/wallet_" + to_string(to) + ".md";
-        ifstream fin_to(filename_to); 
 
         if (fin_to.is_open()) {
             string line;
@@ -134,10 +132,9 @@ void send_crypto_func() {
         } 
         else {
             // ERROR IF U CANT OPEN THE FILE
-            cout << RED << "Error " << BLUE << ": Unable to open file!" << endl;
+            cout << RED << "Error " << RESET << ": Unable to open file!" << endl;
         }
         
-
         if (digits_1 >= sum) {
             // HERE WE CALCULATE WHAT THE BALANCE WOULD BE IN SENDER AND RECIEVER
             int balance_1 = digits_1 - sum;
@@ -148,17 +145,17 @@ void send_crypto_func() {
 
             rewrite_line(filename_from, 4, new_content_from); // UPDATE SENDER BALANCE
             rewrite_line(filename_to, 4, new_content_to); // UPDATE RECIEVER BALANCE
-            cout << "\nTransaction completed " << GREEN << "successfully" << ".";
+            cout << "Transaction completed " << CYAN << "successfully" << ".\n";
         }
         // ERROR IF SENDER HAD NO ENOUGHT MONEY TO SEND CRYPTO
         else {
-            cout << RED << "Error " << BLUE << ":Not enough balance to make the transaction." << endl;
+            cout << RED << "Error " << RESET << ":Not enough balance to make the transaction." << endl;
         }
 
     // OTHER
     } else if (check == "NO") {
-        cout << "Operation cancelled." << endl;
+        cout << RED << "Error: " << RESET << "Operation cancelled." << endl;
     } else {
-        cout << "Invalid input." << endl;
+        cout << RED << "Error: " << RESET << "Invalid input." << endl;
     }
 }

@@ -8,12 +8,9 @@
 #include "SHA256/sha256.h"
 
 // COLORS
-#define RESET   "\033[0m"
-#define RED     "\033[31m"   
-#define GREEN   "\033[32m"     
-#define YELLOW  "\033[33m"  
-#define BLUE    "\033[34m"     
-#define MAGENTA "\033[35m"
+#define RESET       "\033[0m"
+#define CYAN        "\033[36m"     
+#define RED         "\033[31m" 
 
 // USING NAMESPACE STD TO SAFE PLACE AND GET CODE CLEARLY
 using namespace std;
@@ -68,11 +65,11 @@ void new_wallet_func(int wallet_number) {
     outFile.close();
 
     // CMD OUTPUT
-    cout << "New wallet created and data was written " << GREEN << "successfully.\n" << RESET << endl;
-    cout << "# Wallet number: " << MAGENTA << to_string(wallet_number) << RESET << endl;
-    cout << "# Public key: " << MAGENTA << public_key << RESET << endl;
-    cout << "# Private key: " << MAGENTA << private_key << RESET << endl;
-    cout << "# Balance: " << MAGENTA << balance << RESET << endl;
+    cout << CYAN << "New wallet created and data was written successfully.\n\n";
+    cout << "# Wallet number: " << to_string(wallet_number) << "\n";
+    cout << "# Public key: " << public_key << "\n";
+    cout << "# Private key: " << private_key << "\n";
+    cout << "# Balance: " << balance << "\n" << RESET;
 }
 
 // WALLET CHECK INFO FUNCTION
@@ -81,7 +78,7 @@ void check_wallet_info_func() {
     int wallet_number;
 
     // GET THE WALLET NUMBER TO UNDERSTAND WHAT FILE WEE NEED TO OPEN
-    cout << BLUE << "\nWrite an wallet number: " << YELLOW;
+    cout << "\nWrite an wallet number: \n>> ";
     cin >> wallet_number;
 
     // PATH TO WALLET
@@ -102,7 +99,7 @@ void check_wallet_info_func() {
         char ch;
         cout << endl;
         while (fin.get(ch)) {
-            cout << MAGENTA << ch;
+            cout << CYAN << ch;
         }
     }
 
