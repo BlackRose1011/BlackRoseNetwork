@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <vector>
+#include <thread>
 #include "blockchain/wallet_actions/wallets.h"
 #include "blockchain/transactions.h"
 
@@ -11,22 +13,77 @@ using namespace std;
 #define CYAN        "\033[36m"     
 #define RED         "\033[31m" 
 
-string command, password = "yo";
+string command, password = "yo", input;
 bool root = false;
+bool tru = tru;
 
 // WALLET COUNTER TO UNDERSTAND HOW MANY WALLETS ARE CREATED
 int wallet_counter;
 
+int calculate(const string &expression) {
+    vector<int> numbers;
+    vector<char> operations;
+
+    stringstream ss(expression);
+    int num;
+    char op;
+
+    while (ss >> num) {
+        numbers.push_back(num);
+        if (ss >> op) {
+            operations.push_back(op);
+        }
+    }
+
+    // PERFORM TO MULTIPLICATION AND DIVISION FIRST
+    for (size_t i = 0; i < operations.size(); ++i) {
+        if (operations[i] == '*' || operations[i] == '/') {
+            int left = numbers[i];
+            int right = numbers[i + 1];
+            int result = 0;
+            if (operations[i] == '*') {
+                result = left * right;
+            } else {
+                if (right == 0) {
+                    cout << "Error: You can't divide by 0." << endl;
+                    return 0;
+                }
+                result = left / right;
+            }
+            numbers[i] = result;
+            numbers.erase(numbers.begin() + i + 1);
+            operations.erase(operations.begin() + i);
+            --i;
+        }
+    }
+
+    // PERFORD ADDITION AND SUBTRACTION
+    int result = numbers[0];
+    for (size_t i = 0; i < operations.size(); ++i) {
+        if (operations[i] == '+') {
+            result += numbers[i + 1];
+        } else if (operations[i] == '-') {
+            result -= numbers[i + 1];
+        }
+    }
+
+    return result;
+}
+
 int main() {
-    // CHECK WALLET COUNTER
+    // JUST TO MINIMIZE SPACE FOR CODERS
     string filename = "database/wallet_counter.md";
-    ifstream fin(filename);
-    if (fin.is_open()) {
-        fin >> wallet_counter;
-        fin.close();
-    } else {
-        cerr << RED << "Error: " << CYAN << "Failed to open wallet counter file." << endl;
-        return 1;
+    if (tru == true) {
+        // CHECK WALLET COUNTER
+        ifstream fin(filename);
+        if (fin.is_open()) {
+            fin >> wallet_counter;
+            fin.close();
+        } 
+        else {
+            cerr << RED << "Error: " << CYAN << "Failed to open wallet counter file." << endl;
+            return 1;
+        }
     }
 
     // MAIN COMMANDS
@@ -37,7 +94,6 @@ int main() {
         else if (root == false) {
             cout << CYAN << "\n@cmd" << RESET << " >> ";
         }
-        string input;
         getline(cin, input);
         cout << RESET;
 
@@ -90,38 +146,19 @@ int main() {
                 CYAN << "chain transaction -s " << RESET << "- transfer crypto to another wallet\n" <<  
                 CYAN << "sys root -t" << RESET << " - root rules anable.\n" <<
                 CYAN << "sys root -f" << RESET << " - root rules disable.\n" <<
+                CYAN << "sys timer" << RESET << " - set up the timer;\n" <<
+                CYAN << "sys clear" << RESET << " - clear the screen.\n" <<
                 CYAN << "sys help" << RESET << " - show all available commands.\n" <<
                 CYAN << "sys calc" << RESET << " - calculate something.\n" <<
                 CYAN << "sys out" << RESET << " - leave the command line.\n";
             }
             else if (sub_command == "calc") {
-                string act;
-                int fst, snd, result;
+                string expression;
+                cout << "Enter an expression: \n >> ";
+                cin >> expression;
 
-                cout << CYAN << "Write a first number: \n >> ";
-                cin >> fst;
-                cout << CYAN << "Write an action: \n >> ";
-                cin >> act;
-                cout << CYAN << "Write a second number: \n >> ";
-                cin >> snd;
-
-                if (act == "+") {
-                    result = fst + snd;
-                    cout << RESET << "Result from " CYAN << fst << " " << act << " " << snd << RESET << " is " << CYAN << result << RESET;
-                } else if (act == "-") {
-                    result = fst - snd;
-                    cout << RESET << "Result from " CYAN << fst << " " << act << " " << snd << RESET << " is " << CYAN << result << RESET;
-                } else if (act == "*") {
-                    result = fst * snd;
-                    cout << RESET << "Result from " CYAN << fst << " " << act << " " << snd << RESET << " is " << CYAN << result << RESET;
-                } else if (act == "/") {
-                    if (snd <= 0) {
-                        cout << RED << "Error: " << CYAN << "You can't divide by 0 or less.";
-                    } else {
-                        result = fst / snd;
-                        cout << RESET << "Result from " CYAN << fst << " " << act << " " << snd << RESET << " is " << CYAN << result << RESET;
-                    }
-                }
+                int result = calculate(expression);
+                cout << "Result: " << CYAN << result << RESET << endl;
             } 
             else if (sub_command == "root") {
                 if (option == "-t") {
@@ -139,6 +176,17 @@ int main() {
                     cout << "\nRoot rules was succesfully put in to" << RED << " false " << RESET << "state.\n";
                     root = false;
                 }
+            }
+            else if (sub_command == "clear") {
+                cout << "\033[2J\033[1;1H";
+            }
+            else if (sub_command == "timer") {
+                int seconds;
+                cout << "Write the time what you want to set up the timer: \n >> ";
+                cin >> seconds;
+                cout << "Timer set for " << seconds << CYAN << " seconds" << RESET << ".\n";
+                this_thread::sleep_for(chrono::seconds(seconds));
+                cout << CYAN << "Time's up!\n" << RESET;
             }
             else {
                 cerr << RED << "Error: " << RESET << "Invalid command." << endl;

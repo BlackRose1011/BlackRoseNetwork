@@ -11,7 +11,7 @@ using namespace std;
 
 int from, to;
 string check;
-int sum;
+double sum;
 
 #define RESET       "\033[0m"
 #define CYAN        "\033[36m"     
@@ -81,8 +81,8 @@ void send_crypto_func() {
         string filename_to = "database/wallets/wallet_" + to_string(to) + ".md";
         ifstream fin_to(filename_to); 
 
-        int digits_1 = 0; 
-        int digits_2 = 0;
+        double digits_1 = 0; 
+        double digits_2 = 0;
 
         if (fin_from.is_open()) {
             string line;
@@ -94,11 +94,19 @@ void send_crypto_func() {
                     // READ ALL LINE, CHAR BY CHAR
                     string digits_str; 
                     for (char c : line) {
-                        if (isdigit(c)) {
+                        if (isdigit(c) || c == '.') {
                             digits_str += c;
                         }
                     }
-                    digits_1 = stoi(digits_str);
+                    try {
+                        digits_1 = stod(digits_str);
+                    } catch (const std::invalid_argument& e) {
+                        cerr << "Invalid balance format in file: " << filename_from << endl;
+                        return;
+                    } catch (const std::out_of_range& e) {
+                        cerr << "Balance value out of range in file: " << filename_from << endl;
+                        return;
+                    }
                     break; // LEAVE CYCLE 
                 }
                 lineNumber++;
@@ -118,11 +126,19 @@ void send_crypto_func() {
                 if (lineNumber == 4) { 
                     string digits_str;
                     for (char c : line) {
-                        if (isdigit(c)) {
+                        if (isdigit(c) || c == '.') {
                             digits_str += c;
                         }
                     }
-                    digits_2 = stoi(digits_str);
+                    try {
+                        digits_2 = stod(digits_str);
+                    } catch (const std::invalid_argument& e) {
+                        cerr << "Invalid balance format in file: " << filename_to << endl;
+                        return;
+                    } catch (const std::out_of_range& e) {
+                        cerr << "Balance value out of range in file: " << filename_to << endl;
+                        return;
+                    }
                     break; 
                 }
                 lineNumber++;
@@ -137,8 +153,8 @@ void send_crypto_func() {
         
         if (digits_1 >= sum) {
             // HERE WE CALCULATE WHAT THE BALANCE WOULD BE IN SENDER AND RECIEVER
-            int balance_1 = digits_1 - sum;
-            int balance_2 = digits_2 + sum;
+            double balance_1 = digits_1 - sum;
+            double balance_2 = digits_2 + sum;
 
             string new_content_from = "# Balance: " + to_string(balance_1);
             string new_content_to = "# Balance: " + to_string(balance_2);
@@ -149,7 +165,7 @@ void send_crypto_func() {
         }
         // ERROR IF SENDER HAD NO ENOUGHT MONEY TO SEND CRYPTO
         else {
-            cout << RED << "Error " << RESET << ":Not enough balance to make the transaction." << endl;
+            cout << RED << "Error " << RESET << ": Not enough balance to make the transaction." << endl;
         }
 
     // OTHER
