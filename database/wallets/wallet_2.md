@@ -1,4 +1,4 @@
 # Wallet number: 2
-# Public key: 3a86e97b43ccc5fffc0ab4fba16e697c37b31558f6a2ec28f8dc2eba46ef0c2d
-# Private key: LkCUPUbeKiv2p2SgX6REZK57YuTJOSOz
+# Public key: a8e301e903579278c61795f5ec8d54a0b423cb953a7fa03ae134c332ac1493d7
+# Private key: if0UsROIzlPId9XdsPuMS7reAkdLwXBY
 # Balance: 0

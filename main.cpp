@@ -70,20 +70,31 @@ int calculate(const string &expression) {
     return result;
 }
 
+void showprogress(int duration) {
+    const int totalSteps = 100;
+    const int interval = duration * 1000 / totalSteps;
+
+    for (int i = 1; i <= totalSteps; ++i) {
+        string progressBar = string(i / 2, '#') + string(50 - i / 2, ' ');
+        cout << "\r" << progressBar << " " << i << "%" << flush;
+        this_thread::sleep_for(chrono::milliseconds(interval));
+    }
+
+    cout << "\r" << string(50, '#') << " 100%" << endl;
+}
+
 int main() {
     // JUST TO MINIMIZE SPACE FOR CODERS
     string filename = "database/wallet_counter.md";
-    if (tru == true) {
-        // CHECK WALLET COUNTER
-        ifstream fin(filename);
-        if (fin.is_open()) {
-            fin >> wallet_counter;
-            fin.close();
-        } 
-        else {
-            cerr << RED << "Error: " << CYAN << "Failed to open wallet counter file." << endl;
-            return 1;
-        }
+    // CHECK WALLET COUNTER
+    ifstream fin(filename);
+    if (fin.is_open()) {
+        fin >> wallet_counter;
+        fin.close();
+    } 
+    else {
+        cerr << RED << "Error: " << CYAN << "Failed to open wallet counter file." << endl;
+        return 1;
     }
 
     // MAIN COMMANDS
@@ -106,6 +117,9 @@ int main() {
             if (main_command == "chain") {
                 if (sub_command == "wallet") {
                     if (option == "-n") {
+                        int duration = 5;
+                        showprogress(duration);
+
                         new_wallet_func(wallet_counter);
                         wallet_counter++;
                     } 
@@ -126,7 +140,7 @@ int main() {
                     }
                 } 
             } 
-        }
+        }   
 
         // FOR ALL USERS COMMANDS
         if (main_command == "sys") {
@@ -140,10 +154,7 @@ int main() {
                 break;
             } 
             else if (sub_command == "help") {
-                cout << "All available commands: \n\n" <<
-                CYAN << "chain wallet -n " << RESET << "- create new wallet on blockchain.\n" << 
-                CYAN << "chain wallet -i " << RESET << "- check wallet info.\n" << 
-                CYAN << "chain transaction -s " << RESET << "- transfer crypto to another wallet\n" <<  
+                cout << "All available commands: \n\n" << 
                 CYAN << "sys root -t" << RESET << " - root rules anable.\n" <<
                 CYAN << "sys root -f" << RESET << " - root rules disable.\n" <<
                 CYAN << "sys timer" << RESET << " - set up the timer;\n" <<
@@ -151,6 +162,13 @@ int main() {
                 CYAN << "sys help" << RESET << " - show all available commands.\n" <<
                 CYAN << "sys calc" << RESET << " - calculate something.\n" <<
                 CYAN << "sys out" << RESET << " - leave the command line.\n";
+
+                if (root == true) {
+                    cout << "\nAll avaluible root commands: \n\n"
+                    CYAN << "chain wallet -n " << RESET << "- create new wallet on blockchain.\n" << 
+                    CYAN << "chain wallet -i " << RESET << "- check wallet info.\n" << 
+                    CYAN << "chain transaction -s " << RESET << "- transfer crypto to another wallet\n";
+                }
             }
             else if (sub_command == "calc") {
                 string expression;
@@ -190,6 +208,59 @@ int main() {
             }
             else {
                 cerr << RED << "Error: " << RESET << "Invalid command." << endl;
+            }
+        }
+
+        // FILE AND FOLDERS MANAGMENT FUNCTIONS
+        if (main_command == "file") {
+            if (sub_command == "create") {
+
+            }
+            else if (sub_command == "open") {
+
+            }
+            else if (sub_command == "delete") {
+
+            }
+            else if (sub_command == "write") {
+
+            }
+            else if (sub_command == "rewrite") {
+
+            }
+            else if (sub_command == "open") {
+
+            }
+            else if (sub_command == "close") {
+
+            }
+            else if (sub_command == "copy") {
+
+            }
+            else if (sub_command == "replace") {
+
+            }
+            else if (sub_command == "archive") {
+
+            }
+            else if (sub_command == "unpack") {
+
+            }
+            
+            // REPOSITORY MANAGMENT FUNCTIONS
+            else if (sub_command == "folder") {
+                if (option == "-c") { // create
+
+                }
+                else if (option == "-d") { // delete
+
+                }
+                else if (option == "-r") { // rename
+
+                }
+                else if (option == "-p") { // change place
+
+                }
             }
         }
     }
