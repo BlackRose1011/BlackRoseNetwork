@@ -1,5 +1,4 @@
-// JUST INDENTIFY FUNCTIONS THAT WE CREATED IN transactions.cpp
-
+// файл для передачі коду в інчий файл
 #ifndef WALLETS_H
 #define WALLETS_H
 

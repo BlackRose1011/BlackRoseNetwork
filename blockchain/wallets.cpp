@@ -1,21 +1,23 @@
-// INCLUDE ALL THING WHAT WE NEED
+// додаємо всі бібліотеки що нам потрібні
 #include "wallets.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <cstdlib>
 #include <ctime>
-#include "SHA256/sha256.h"
 
-// COLORS
+// додаємо код з файлів який нам потрібен
+#include "sha256.h"
+
+// кольори для простішого користування консолю
 #define RESET       "\033[0m"
 #define CYAN        "\033[36m"     
 #define RED         "\033[31m" 
 
-// USING NAMESPACE STD TO SAFE PLACE AND GET CODE CLEARLY
+// використовуємо namespace std для скорочення коду
 using namespace std;
 
-// LIKE SHA 256 RANDOM STRING GENERATION
+// функція коду SHA-256
 string generate_random_string(int length) {
     string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     string random_string;
@@ -28,9 +30,9 @@ string generate_random_string(int length) {
     return random_string;
 }
 
-// NEW WALLET CREATION FUNC
+// функція створення нового кошелька в блокчейні
 void new_wallet_func(int wallet_number) {
-    // ALL SHA256 MECHANISM
+    // створення публічного ключа
     string public_key;
     uint8_t hash[SHA256::hash_size];
     public_key = generate_random_string(16);
@@ -38,33 +40,35 @@ void new_wallet_func(int wallet_number) {
     sha256.update(reinterpret_cast<const uint8_t*>(public_key.c_str()), public_key.size());
     sha256.final(hash);
     public_key = SHA256::toString(hash);
+
+    // створення приватного ключа з публічного ключа
     string private_key = generate_random_string(32);
 
-    // CREATE WALLET BALANCE
+    // створюєм баланс кошелька
     double balance = 0.0;
 
-    // PATH WHERE WALLET INFO WILL SAVED
+    // шлях до папки де буде зберігатися кошельок
     string filename = "database/wallets/wallet_" + to_string(wallet_number) + ".md";
 
-    // OPEN FILE TO WRITE INFO THERE
+    // відкриваємо файл щоб записати туда інформацію
     ofstream outFile(filename);
 
-    // IF FILE WASN'T OPEN
+    // якщо файл не відкрився
     if (!outFile) {
         cerr << "Cannot open file" << RED << filename << RESET << " for writing." << endl;
         return;
     }
 
-    // WRITE WALLET INFO TO FILE
+    // записуємо данні в кошельок
     outFile << "# Wallet number: " << to_string(wallet_number) << endl;
     outFile << "# Public key: " << public_key << endl;
     outFile << "# Private key: " << private_key << endl;
     outFile << "# Balance: " << balance << endl;
 
-    // CLOSE FILE
+    // закриваєм файл
     outFile.close();
 
-    // CMD OUTPUT
+    // виводимо в консоль записанні данні в файл тільки що створеного кошелька
     cout << CYAN << "New wallet created and data was written successfully.\n\n";
     cout << "# Wallet number: " << to_string(wallet_number) << "\n";
     cout << "# Public key: " << public_key << "\n";
@@ -72,30 +76,32 @@ void new_wallet_func(int wallet_number) {
     cout << "# Balance: " << balance << "\n" << RESET;
 }
 
-// WALLET CHECK INFO FUNCTION
+// функція перевірки інформації кошелька
 void check_wallet_info_func() {
     string filename;
     int wallet_number;
 
-    // GET THE WALLET NUMBER TO UNDERSTAND WHAT FILE WEE NEED TO OPEN
+    // вводимо номер кошелька про який ми хочемо дізнатися 
+    // (пізніше замінимо) на адрес кошелька а не на номер
     cout << "\nWrite an wallet number: \n>> ";
     cin >> wallet_number;
 
-    // PATH TO WALLET
+    // шлях до кошелька
     filename = "database/wallets/wallet_" + to_string(wallet_number) + ".md";
 
-    // OPEN THE FILE
+    // відкриваємо файл
     ifstream fin;
     fin.open(filename);
 
-    // IF FILE ISN'T OPEN
+    // якщо файл не був відкритий
     if (!fin.is_open()) {
         cout << RED << "Error: " << RESET << "file cannot be opened.\n" << RED << 
         "Reason: " << RESET << "no such file exists.\n";
     }
-    // IF FILE OPEN AND ALL IS GOOD
+    
+    // якщо файл відкрився
     else {
-        // READ FUNCTION AND OUTPUT TO CMD
+        // читаємо файл та виводимо все в консоль
         char ch;
         cout << endl;
         while (fin.get(ch)) {
@@ -103,6 +109,6 @@ void check_wallet_info_func() {
         }
     }
 
-    // CLOSE FILE
+    // закриваємо файл
     fin.close();
 }

@@ -49,6 +49,7 @@
         "algorithm": "cpp",
         "iomanip": "cpp",
         "fstream": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "thread": "cpp"
     }
 }

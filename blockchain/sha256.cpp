@@ -1,3 +1,4 @@
+// NO COMMENTS, JUST SHA-256 FUNC
 #include <iostream>
 #include <sstream>
 #include <iomanip>
