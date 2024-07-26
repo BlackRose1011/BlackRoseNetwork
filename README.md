@@ -4,16 +4,24 @@ Welcome to BlackRoseNetwork – a blockchain-based project aimed at creating a s
 
 # Features
 Decentralization: Fully distributed network with no central point of failure.
+
 Security: Implements robust cryptographic algorithms to ensure data integrity and privacy.
+
 Efficiency: Optimized consensus mechanisms to improve transaction speed and reduce energy consumption.
+
 Scalability: Designed to handle a growing number of nodes and transactions with ease.
 
 # Project Structure
 blockchain/ - Implementation of the core blockchain logic.
+
 database/ - Handles database operations for storing blockchain data.
+
 include/ - Header files for the project.
+
 main/ - Main execution files and entry points for the application.
+
 trash/ - Deprecated or temporarily removed files.
+
 .vscode/ - Settings for Visual Studio Code.
 
 # Contributing
