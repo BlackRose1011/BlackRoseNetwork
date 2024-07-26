@@ -1,4 +1,4 @@
 # Wallet number: 12
-# Public key: 45254dbbdb12a34c86cd473d72e05b9050cd3f68988285a14a3be4241a7fb38a
-# Private key: Q2Ljs7wlCaRwUBzWLPIDhbjkzBkCjeVb
+# Public key: b00ad6e1144e1f0fc6939ee21212609ef086579aa9e7ade9e6f4cd514a55eb22
+# Private key: LqzCjXX16PdIeV8FVlOiFZ8KFfE0t8xZ
 # Balance: 0

@@ -103,6 +103,9 @@ void handle_sys_commands(const string& sub_command, const string& option, bool& 
                 cout << "Root rules activated " << CYAN << "successfully!\n";
                 root = true;
             }
+            else {
+                cerr << RED << "Error" << RESET << ": password incorect.";
+            }
         } 
         else if (option == "-f") { // деактивація root-прав -f = false = брехня
             cout << "\nRoot rules were successfully set to " << RED << "false" << RESET << " state.\n";
@@ -120,8 +123,5 @@ void handle_sys_commands(const string& sub_command, const string& option, bool& 
         cout << "Timer set for " << seconds << CYAN << " seconds" << RESET << ".\n";
         this_thread::sleep_for(chrono::seconds(seconds));
         cout << CYAN << "Time's up!\n" << RESET;
-    }
-    else { // якщо такої команди не існує
-        cerr << RED << "Error: " << RESET << "Invalid command." << endl;
     }
 }

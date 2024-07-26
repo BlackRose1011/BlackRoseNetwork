@@ -63,14 +63,11 @@ int main() {
         }
 
         // COMMON-COMMANDS
-        else if (main_command == "sys") { // функція команд простого користувача
+        if (main_command == "sys") { // функція команд простого користувача
             handle_sys_commands(sub_command, option, root, password, filename, wallet_counter);
         } 
         else if (main_command == "file") { // функція роботи з файлами
             files_actions(input);
-        }
-        else { // якщо такої команди немає
-            cerr << RED << "Error: " << CYAN << "Invalid command." << endl;
         }
     }
     return 0; 
