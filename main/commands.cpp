@@ -5,7 +5,6 @@
 #include <thread>
 
 // Додаємо всі необхідні функції з інчих файлів
-#include "commands.h"
 #include "wallets.h"
 #include "transactions.h"
 #include "calculator.h"
@@ -39,7 +38,11 @@ void handle_root_commands(const string& main_command, const string& sub_command,
         } 
         else if (sub_command == "transaction") { // виконання транзакцій
             if (option == "-s") { // надсилання криптовалюти тобто -s = send = надіслати
+                int transaction_number = 0;
+                int block_number = 0;
+                
                 send_crypto_func();
+                write_transaction_info(transaction_number, block_number);
             } 
             else if (option == "-l") { // виведення списку транзакцій у останньому блоку -l = list = список
                 // Допрацюємо пізніше
@@ -55,7 +58,7 @@ void handle_root_commands(const string& main_command, const string& sub_command,
 }
 
 // функція основного списку команд тобто sys доступно всім користувачам
-void handle_sys_commands(const string& sub_command, const string& option, bool& root, const string& password, const string& filename, int& wallet_counter) {
+void handle_sys_commands(const string& sub_command, const string& option, bool& root, const string& password, const string& filename, int& wallet_counter, bool& status) {
     if (sub_command == "out") { // вихід з консолі
         ofstream outFile(filename); // відкриття файлу щоб обновити рахунок створених кошельків
         if (!outFile) { // помилка якщо файлу, де зберігається число створенних кошельків, немає
@@ -123,5 +126,33 @@ void handle_sys_commands(const string& sub_command, const string& option, bool& 
         cout << "Timer set for " << seconds << CYAN << " seconds" << RESET << ".\n";
         this_thread::sleep_for(chrono::seconds(seconds));
         cout << CYAN << "Time's up!\n" << RESET;
+    }
+    else if (sub_command == "Q#7g$Y1z@X9w") { // ???
+        bool status = true;
+        cout << "⠄⠄⠠⠄⢑⢽⣧⡀⠄⠅⠘⡽⣿⣄⡀⠄⠐⠐⠄⢀⠂⢀⠂⢀⠐⢀⢀⠄⢀⠄⡀⠁⠂⠈⡢⡀⠄⢁⠂⡈⡀⢀⠄⢁⢁⠄⢁⠄⠁⡈\n"
+                "⠂⠠⠄⡀⠠⣺⣿⣷⡄⠄⠄⠐⠿⣿⣷⠔⠐⢀⠐⠄⢁⠄⢐⠄⢈⠐⠰⠂⠄⡁⢀⠂⠄⠄⠰⠲⠃⠄⠁⠁⠈⠐⠂⠄⠂⠐⢈⠐⠂⠐\n"
+                "⡁⠐⠄⠄⠄⢀⣩⣆⣴⣆⠄⠠⠄⣶⣶⣾⣧⣄⠄⠄⠡⠂⠠⢁⢈⠐⡂⠈⠈⠆⡐⡂⢐⢂⢀⠑⠺⣿⣦⣀⠢⠄⠐⡀⡀⠄⠄⠈⠈⠠\n"
+                "⠄⠄⢀⠄⠄⠸⣿⣿⣿⣿⣷⣦⡀⠘⢿⣿⣿⣿⣷⣆⡀⠐⠄⠠⡐⡐⠅⠰⠰⠄⡀⠈⠐⠁⠨⢐⠂⡈⠙⠿⢷⣤⡄⠂⠄⠄⠡⡀⠂⠠\n"
+                "⠱⢤⣐⠠⠂⡀⢹⣿⣿⣿⣿⣿⣿⣶⡌⡻⣿⣿⣿⣿⣿⣶⣄⠄⠈⡂⠄⠌⠄⣀⣁⢁⡀⡀⢀⢀⣀⢠⣈⣀⣄⣍⣹⣷⣴⣀⡁⠐⢃⢄\n"
+                "⣄⣹⣿⣷⣦⠤⠄⠉⠻⢟⣻⣿⢿⣿⣷⣷⣷⣿⣿⣿⣿⣿⣿⣆⢱⣦⣬⣂⣁⡈⡙⠿⣿⣯⣏⣿⣷⣿⣿⡿⣟⡿⢟⠻⠛⢿⣿⣾⣶⣮\n"
+                "⢿⠟⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⠹⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⡿⠛⠉⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⠿\n"
+                "⠄⠄⠄⠄⠄⠄⠄⠄⠄⢀⠄⠄⢠⡀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⠂⣀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄\n"
+                "⣀⠄⣠⡄⠄⠄⠄⠄⠄⠄⠄⢀⣸⣽⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣾⣯⣿⡿⢀⠄⠄⠄⠄⠄⠄⠁⠄⠄\n"
+                "⣾⣦⠙⠋⠃⠄⠄⠄⠄⠄⠈⠄⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠄⠄⠄⠄⠄⠄⠄⠄⠄⠐⣶\n"
+                "⣿⣿⣆⠄⠄⢀⡪⢧⢌⡦⠄⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠄⠠⢯⡲⣖⡣⠄⠄⣼⣿\n"
+                "⣿⣿⣿⣦⣠⣄⣉⣈⣬⣌⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⣌⣅⣘⣌⣊⣠⣴⣿⣿\n"
+                "⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣷⣿⣟⣯⡯⣿\n"
+                "⡹⣿⣻⣽⣟⣟⣿⡿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⡿⣟⣫⡽⣽⣟⣹⢿⣟\n"
+                "⢽⡷⣻⡾⣽⡿⣯⡿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣻⣗⣽⣟⣺⣟⢽⢷⢽⣏⡯\n"
+                "⢷⢽⡟⡾⣻⣹⣞⣽⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣷⣻⣾⣟⣗⣻⣗⣳⡾⣺⢶⢽\n"
+                "⢽⡾⣝⣗⢽⡽⣽⡿⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣻⣾⣞⣯⣹⣗⡽⣽\n"
+                "⠪⣯⣫⣻⢾⣿⡿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣽⣷⣻⣯⣿⢾⣽⡯\n"
+                "⠄⠹⣿⣾⣿⣽⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣽⣷⠃\n"
+                "⠄⠄⢹⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠄\n"
+                "⠄⠄⠄⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠄⠄\n"
+                "⠄⠄⠄⠄⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣬⣭⣍⣩⣭⣥⣤⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠄⠄⠄\n"
+                "⠄⠄⠄⠄⠄⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠄⠄⠄⠄\n"
+                "⠄⠄⠄⠄⠄⠄⠘⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠄⠄⠄⠄⠄⠄\n"
+                "⠄⠄⠄⠄⠄⠄⠄⠄⠈⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠄⠄⠄⠄⠄⠄⠄\n\n";
     }
 }

@@ -6,6 +6,11 @@
 #include <ctime>
 #include <cctype>
 #include <vector>
+#include <sys/stat.h>
+#include <sys/types.h> 
+
+#include "sha256.h"
+#include "utils.h"
 
 // використуваємо namespace std для скорочення коду
 using namespace std;
@@ -84,7 +89,8 @@ void send_crypto_func() {
     cout << "\n";
 
     // перевірка чи дійсно користувач ввід потрібні данні
-    if (check == "YES") {
+    if (check == "YES") 
+    {
         // шлях до файлу з відки забереться криптовалюта
         string filename_from = "database/wallets/wallet_" + to_string(from) + ".md";
         ifstream fin_from(filename_from); // відкриття файлу
@@ -180,9 +186,115 @@ void send_crypto_func() {
         else { // помилка якшо відправник немає на балансі достатньо криптовалюти
             cout << RED << "Error " << RESET << ": Not enough balance to make the transaction." << endl;
         }
-    } else if (check == "NO") { // якшо користувач помилився то транзакція відмінається
+    } else if (check == "NO") 
+    { // якшо користувач помилився то транзакція відмінається
         cout << RED << "Error: " << RESET << "Operation cancelled." << endl;
-    } else { // якщо користувач ввів щось крім YES або NO
+    } else 
+    { // якщо користувач ввів щось крім YES або NO
         cout << RED << "Error: " << RESET << "Invalid input." << endl;
     }
+}
+
+// функція запису тразакції у файл
+void write_transaction_info(int transaction_number = 0, int block_number = 0) {
+    
+    string file = "database/block_counter.md";
+    string file2 = "database/transaction_counter.md";
+
+    //  шлях до файлу де буде записана тразакція
+    string directory = "database/transaction/block_" + to_string(block_number);
+    string filename = directory + "/transaction_" + to_string(transaction_number) + ".md";
+
+    // Створюємо директорію, якщо її не існує
+    struct stat info;
+
+    if (stat(directory.c_str(), &info) != 0) {
+        // Директорія не існує, створюємо її
+        if (mkdir(directory.c_str(), 0777) != 0) {
+            cerr << "Cannot create directory " << directory << endl;
+            return;
+        }
+    } else if (!(info.st_mode & S_IFDIR)) {
+        cerr << directory << " is not a directory!" << endl;
+        return;
+    }
+
+    ofstream outFile(filename);
+
+    // якщо файл не відкрився
+    if (!outFile) {
+        cerr << "Cannot open file " << RED << filename << RESET << " for writing." << endl;
+        return;
+    }
+
+
+    ifstream fin;
+    fin.open(file2);
+    
+    // якщо файл не був відкритий
+    if (!fin.is_open()) {
+        cout << RED << "Error: " << RESET << "file cannot be opened.\n" << RED << 
+        "Reason: " << RESET << "no such file exists.\n";
+    }   
+    
+    // якщо файл відкрився
+    else {
+        // читаємо файл та виводимо все в консоль
+        char ch;
+        cout << endl;
+        while (fin.get(ch)) {
+            transaction_number = ch;
+        }
+    }
+    
+    // відкриваємо файл
+    fin.open(file);
+    
+    // якщо файл не був відкритий
+    if (!fin.is_open()) {
+        cout << RED << "Error: " << RESET << "file cannot be opened.\n" << RED << 
+        "Reason: " << RESET << "no such file exists.\n";
+    }   
+    
+    // якщо файл відкрився
+    else {
+        // читаємо файл та виводимо все в консоль
+        char ch;
+        cout << endl;
+        while (fin.get(ch)) {
+            block_number = ch;
+        }
+    }
+
+    fin.close();
+
+    //  шлях до файлу де буде записана тразакція
+    string filename = "database/transaction/block_" + to_string(block_number) + "/transaction_" + to_string(transaction_number) + ".md";
+
+    ofstream outFile(filename);
+
+    // якщо файл не відкрився
+    if (!outFile) {
+        cerr << "Cannot open file" << RED << filename << RESET << " for writing." << endl;
+        return;
+    }
+
+    // створення хешу транзакції
+    string transaction_hash;
+    uint8_t hash[SHA256::hash_size];
+    transaction_hash = generate_random_string(64);
+    SHA256 sha256;
+    sha256.update(reinterpret_cast<const uint8_t*>(transaction_hash.c_str()), transaction_hash.size());
+    sha256.final(hash);
+    transaction_hash = SHA256::toString(hash);
+
+    // записуємо данні в кошельок
+    outFile << "# From: " << to_string(from) << endl;
+    outFile << "# To: " << to << endl;
+    outFile << "# Sum: " << sum << endl;
+    outFile << "# Time: " << time << endl;
+    outFile << "# Hash: " << transaction_hash << endl;
+    outFile << "# Transaction number: " << transaction_number << endl;
+
+    outFile.close();
 }

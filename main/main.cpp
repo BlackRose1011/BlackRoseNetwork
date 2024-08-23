@@ -3,6 +3,11 @@
 #include <string>
 #include <fstream>
 #include <thread>
+#include <cstdlib>
+#include <algorithm>
+#include <ctime>
+#include <vector>
+#include <random>
 
 // додаємо необхідний код з файлів
 #include "wallets.h"
@@ -27,6 +32,9 @@ wallet_counter - ініціалізуєм перемінну номера кош
 string command, password = "yo", input;
 bool root = false;
 int wallet_counter;
+
+// ???
+bool status = false;
 
 int main() {
     // вказуємо шлях до файлу де лежить значення скільки кошельків уже створенно
@@ -64,7 +72,7 @@ int main() {
 
         // COMMON-COMMANDS
         if (main_command == "sys") { // функція команд простого користувача
-            handle_sys_commands(sub_command, option, root, password, filename, wallet_counter);
+            handle_sys_commands(sub_command, option, root, password, filename, wallet_counter, status);
         } 
         else if (main_command == "file") { // функція роботи з файлами
             files_actions(input);
